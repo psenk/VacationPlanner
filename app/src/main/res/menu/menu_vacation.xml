@@ -5,19 +5,19 @@
         android:id="@+id/action_add_vacation"
         android:icon="@drawable/add"
         android:title="@string/add_vacation"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_edit_vacation"
         android:icon="@drawable/edit"
         android:title="@string/edit_vacation"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_delete_vacation"
         android:icon="@drawable/delete"
         android:title="@string/delete_vacation"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_cancel_edit"
@@ -25,4 +25,10 @@
         android:title="@string/cancel"
         app:showAsAction="always"
         android:visible="false"/>
+
+    <item
+        android:id="@+id/action_preferences"
+        android:title="@string/settings"
+        app:showAsAction="never" />
+
 </menu>

@@ -1,4 +1,4 @@
-package com.zybooks.vacationplanner;
+package com.school.vacationplanner;
 
 import android.content.Context;
 
