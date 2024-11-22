@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">VacationPlanner</string>
+    <string name="app_name">Vacation Planner</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="vacation_title">Vacation Title</string>
+    <string name="vacation_lodging">Vacation Lodging</string>
+    <string name="vacation_date">YYYY-MM-DD</string>
+
+    <string name="lodging_header">Lodging: </string>
+    <string name="start_date_header">Start Date: </string>
+    <string name="end_date_header">End Date: </string>
+    <string name="add_vacation">Add Vacation</string>
+    <string name="edit_vacation">Edit Vacation</string>
+    <string name="delete_vacation">Delete Vacation</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
