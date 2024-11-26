@@ -8,23 +8,15 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/edit_vacation_title"
+        android:id="@+id/add_excursion_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/vacation_title"
+        android:hint="@string/excursion_title"
         android:importantForAutofill="no"
         android:inputType="text" />
 
     <EditText
-        android:id="@+id/edit_vacation_lodging"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/vacation_lodging"
-        android:importantForAutofill="no"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/edit_vacation_start_date"
+        android:id="@+id/add_excursion_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/date_format"
@@ -32,23 +24,14 @@
         android:inputType="text"
         tools:ignore="TextFields" />
 
-    <EditText
-        android:id="@+id/edit_vacation_end_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/date_format"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        tools:ignore="TextFields"/>
-
     <Button
-        android:id="@+id/vacation_save_button"
+        android:id="@+id/excursion_save_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/save" />
 
     <Button
-        android:id="@+id/vacation_cancel_button"
+        android:id="@+id/excursion_cancel_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/cancel" />

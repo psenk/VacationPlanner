@@ -20,13 +20,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_cancel_edit"
-        android:icon="@drawable/cancel"
-        android:title="@string/cancel"
-        app:showAsAction="always"
-        android:visible="false"/>
-
-    <item
         android:id="@+id/action_preferences"
         android:title="@string/settings"
         app:showAsAction="never" />

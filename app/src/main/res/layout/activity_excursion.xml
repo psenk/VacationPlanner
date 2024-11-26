@@ -6,20 +6,20 @@
     android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/vacation_content"
+        android:id="@+id/excursion_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vacation_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/excursion_toolbar" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/vacation_toolbar"
+        android:id="@+id/excursion_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:title="@string/app_name"
+        android:title="@string/excursions"
         android:titleTextColor="@android:color/black"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,10 +27,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/vacation_recycler_view"
+        android:id="@+id/excursion_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/vacation_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/excursion_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="8dp"
@@ -7,17 +9,18 @@
     android:background="@android:color/white"
     android:elevation="2dp"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
 
     <TextView
         android:id="@+id/vacation_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:text="@string/vacation_title"
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:maxLines="1"/>
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/vacation_lodging"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/black"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -60,8 +63,8 @@
             android:id="@+id/vacation_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/vacation_date"
-            android:textColor="@android:color/darker_gray"
+            android:text="@string/date_format"
+            android:textColor="@android:color/black"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -83,9 +86,43 @@
             android:id="@+id/vacation_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/vacation_date"
-            android:textColor="@android:color/darker_gray"
+            android:text="@string/date_format"
+            android:textColor="@android:color/black"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/excursions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/excursion"
+            android:drawablePadding="10dp"
+            android:paddingVertical="5dp"
+            android:gravity="center"
+            android:text="@string/view_excursions"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/share_vacation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@string/share_vacation"
+            android:src="@drawable/share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
