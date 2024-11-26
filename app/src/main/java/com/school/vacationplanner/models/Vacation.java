@@ -10,17 +10,17 @@ import com.school.vacationplanner.repo.Converters;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @TypeConverters(Converters.class)
 public class Vacation {
 
-    // fields
+    // constants
     @Ignore
-    DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+
+    // variables
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private long id;
@@ -37,8 +37,6 @@ public class Vacation {
     @ColumnInfo(name = "end_date")
     private LocalDate endDate;
 
-    @ColumnInfo(name = "excursions")
-    private List<Excursion> excursions;
 
     // constructors
     public Vacation() {
@@ -50,8 +48,8 @@ public class Vacation {
         this.lodging = lodging;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.excursions = new ArrayList<>();
     }
+
 
     // getters and setters
     public long getId() {
@@ -94,24 +92,13 @@ public class Vacation {
         this.endDate = endDate;
     }
 
-    public List<Excursion> getExcursions() {
-        return excursions;
-    }
 
-    public void setExcursions(List<Excursion> excursions) {
-        this.excursions = excursions;
-    }
-
-    // methods
+    // custom methods
     public String getStartDateFormatted() {
         return startDate != null ? startDate.format(DATE_FORMAT) : "Not Set";
     }
 
     public String getEndDateFormatted() {
         return endDate != null ? endDate.format(DATE_FORMAT) : "Not Set";
-    }
-
-    public void addExcursion(Excursion excursion) {
-        this.excursions.add(excursion);
     }
 }
