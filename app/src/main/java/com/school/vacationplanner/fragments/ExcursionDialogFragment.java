@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.school.vacationplanner.R;
 import com.school.vacationplanner.models.Excursion;
+import com.school.vacationplanner.repo.VacationPlannerRepository;
 
 import java.time.LocalDate;
 import java.util.regex.Matcher;
@@ -28,6 +29,9 @@ public class ExcursionDialogFragment extends DialogFragment {
     private static final String TAG = "ExcursionDialogFragment";
     private static final String INVALID_MISSING_DATA = "All fields are required";
     private static final String INVALID_DATE_FORMAT_WARNING = "Please use the correct date format (yyyy-MM-dd)";
+    private static final String INVALID_VACATION_NOT_FOUND = "Vacation not found";
+    private static final String INVALID_DATE_OUTSIDE_VACATION = "Excursion date must be within vacation dates";
+    private static final String INVALID_DATE_WARNING = "Invalid date format";
 
 
     // variables
@@ -96,17 +100,8 @@ public class ExcursionDialogFragment extends DialogFragment {
                 Toast.makeText(getContext(), INVALID_DATE_FORMAT_WARNING, Toast.LENGTH_SHORT)
                         .show();
             }
-            LocalDate dateLocal = LocalDate.parse(date);
-            Excursion excursion = new Excursion(title, vacationId, dateLocal);
-            if (excursionId != -1) {
-                excursion.setId(excursionId);
-            }
-            Log.d(TAG, "onCreateDialog: Creating new Excursion: " + excursion.getId());
-            if (listener != null) {
-                Log.d(TAG, "onCreateDialog: Notifying listener about new excursion");
-                listener.onExcursionAdded(excursion);
-            }
-            dismiss();
+
+            validateAndSave(title, date);
         });
 
         cancelButton.setOnClickListener(v -> {
@@ -129,5 +124,36 @@ public class ExcursionDialogFragment extends DialogFragment {
         boolean isValid = matcher.matches();
         Log.d(TAG, "isValidDateFormat: Date is valid: " + isValid);
         return isValid;
+    }
+
+    private void validateAndSave(String title, String date) {
+        VacationPlannerRepository.getInstance(requireContext()).getVacationById(vacationId, vacation -> {
+            if (vacation == null) {
+                Log.w(TAG, "onCreateDialog: Vacation not found for ID " + vacationId);
+                Toast.makeText(getContext(), INVALID_VACATION_NOT_FOUND, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            LocalDate dateLocal = LocalDate.parse(date);
+            LocalDate startDate = vacation.getStartDate();
+            LocalDate endDate = vacation.getEndDate();
+
+            if (dateLocal.isBefore(startDate) || dateLocal.isAfter(endDate)) {
+                Log.w(TAG, "onCreateDialog: Date is out of vacation bounds");
+                Toast.makeText(getContext(), INVALID_DATE_OUTSIDE_VACATION, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Excursion excursion = new Excursion(title, vacationId, dateLocal);
+            if (excursionId != -1) {
+                excursion.setId(excursionId);
+            }
+            Log.d(TAG, "onCreateDialog: Creating new Excursion: " + excursion.getId());
+            if (listener != null) {
+                Log.d(TAG, "onCreateDialog: Notifying listener about new excursion");
+                listener.onExcursionAdded(excursion);
+            }
+            dismiss();
+        });
     }
 }

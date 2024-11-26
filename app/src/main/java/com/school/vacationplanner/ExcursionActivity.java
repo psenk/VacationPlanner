@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.school.vacationplanner.adapters.ExcursionAdapter;
 import com.school.vacationplanner.fragments.ExcursionDialogFragment;
@@ -16,10 +19,13 @@ import com.school.vacationplanner.fragments.VacationDialogFragment;
 import com.school.vacationplanner.models.Excursion;
 import com.school.vacationplanner.models.Vacation;
 import com.school.vacationplanner.repo.VacationPlannerRepository;
+import com.school.vacationplanner.workers.ExcursionNotificationWorker;
+import com.school.vacationplanner.workers.VacationNotificationWorker;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class ExcursionActivity extends AppCompatActivity {
 

@@ -44,8 +44,18 @@ public class NotificationUtility {
         }
     }
 
-    private static void sendNotification(Context context, String vacationTitle, String message) {
-        Log.d(TAG, "sendNotification: Sending notification for vacation: " + vacationTitle);
+    public static void showExcursionNotification(Context context, String excursionTitle, String message) {
+        Log.d(TAG, "showExcursionNotification: Checking if notifications are enabled for excursion: " + excursionTitle);
+        if (areNotificationsEnabled()) {
+            Log.d(TAG, "showExcursionNotification: Notifications are enabled. Showing notification for excursion: " + excursionTitle);
+            sendNotification(context, excursionTitle, message);
+        } else {
+            Log.d(TAG, "showExcursionNotification: Notifications are disabled. Skipping notification for excursion: " + excursionTitle);
+        }
+    }
+
+    private static void sendNotification(Context context, String title, String message) {
+        Log.d(TAG, "sendNotification: Sending notification for: " + title);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Log.d(TAG, "sendNotification: NotificationManager initialized. Creating notification channel.");
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
