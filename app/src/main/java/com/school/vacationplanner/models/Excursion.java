@@ -13,12 +13,7 @@ import com.school.vacationplanner.repo.Converters;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Entity(foreignKeys = @ForeignKey(
-        entity = Vacation.class,
-        parentColumns = "id",
-        childColumns = "vacation_id",
-        onDelete = ForeignKey.RESTRICT),
-        indices = {@Index("vacation_id")})
+@Entity(foreignKeys = @ForeignKey(entity = Vacation.class, parentColumns = "id", childColumns = "vacation_id", onDelete = ForeignKey.RESTRICT), indices = {@Index("vacation_id")})
 @TypeConverters(Converters.class)
 public class Excursion {
 
