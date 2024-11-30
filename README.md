@@ -23,4 +23,4 @@ Share Vacation: From Vacation Planner screen, click arrow share button on bottom
 Android 15, Vanilla Ice Cream, API Level 35
 
 ## GITLAB LINK
-https://gitlab.com/wgu-gitlab-environment/student-repos/psenkbe/d308-mobile-application-development-android
+https://gitlab.com/wgu-gitlab-environment/student-repos/psenkbe/d308-mobile-application-development-android/-/tree/project?ref_type=heads
