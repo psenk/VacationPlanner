@@ -20,6 +20,7 @@ import com.school.vacationplanner.models.Excursion;
 import com.school.vacationplanner.repo.VacationPlannerRepository;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -99,6 +100,7 @@ public class ExcursionDialogFragment extends DialogFragment {
                 Log.w(TAG, "onCreateDialog: Validation failed - invalid date format");
                 Toast.makeText(getContext(), INVALID_DATE_FORMAT_WARNING, Toast.LENGTH_SHORT)
                         .show();
+                return;
             }
 
             validateAndSave(title, date);
@@ -127,33 +129,57 @@ public class ExcursionDialogFragment extends DialogFragment {
     }
 
     private void validateAndSave(String title, String date) {
+        if (!isValidDateFormat(date)) {
+            Log.w(TAG, "onCreateDialog: Validation failed - invalid date format");
+            getActivity().runOnUiThread(() ->
+                    Toast.makeText(getContext(), INVALID_DATE_FORMAT_WARNING, Toast.LENGTH_SHORT).show()
+            );
+            return;
+        }
+
+        // Get vacation details
         VacationPlannerRepository.getInstance(requireContext()).getVacationById(vacationId, vacation -> {
             if (vacation == null) {
                 Log.w(TAG, "onCreateDialog: Vacation not found for ID " + vacationId);
-                Toast.makeText(getContext(), INVALID_VACATION_NOT_FOUND, Toast.LENGTH_SHORT).show();
+                getActivity().runOnUiThread(() ->
+                        Toast.makeText(getContext(), INVALID_VACATION_NOT_FOUND, Toast.LENGTH_SHORT).show()
+                );
                 return;
             }
 
-            LocalDate dateLocal = LocalDate.parse(date);
-            LocalDate startDate = vacation.getStartDate();
-            LocalDate endDate = vacation.getEndDate();
+            try {
+                LocalDate dateLocal = LocalDate.parse(date);
+                LocalDate startDate = vacation.getStartDate();
+                LocalDate endDate = vacation.getEndDate();
 
-            if (dateLocal.isBefore(startDate) || dateLocal.isAfter(endDate)) {
-                Log.w(TAG, "onCreateDialog: Date is out of vacation bounds");
-                Toast.makeText(getContext(), INVALID_DATE_OUTSIDE_VACATION, Toast.LENGTH_SHORT).show();
-                return;
-            }
+                // Validate the excursion date
+                if (dateLocal.isBefore(startDate) || dateLocal.isAfter(endDate)) {
+                    Log.w(TAG, "onCreateDialog: Date is out of vacation bounds");
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), INVALID_DATE_OUTSIDE_VACATION, Toast.LENGTH_SHORT).show()
+                    );
+                    return;
+                }
 
-            Excursion excursion = new Excursion(title, vacationId, dateLocal);
-            if (excursionId != -1) {
-                excursion.setId(excursionId);
+                // Create the new Excursion
+                Excursion excursion = new Excursion(title, vacationId, dateLocal);
+                if (excursionId != -1) {
+                    excursion.setId(excursionId);
+                }
+                Log.d(TAG, "onCreateDialog: Creating new Excursion: " + excursion.getId());
+
+                // Notify listener and dismiss only if everything is successful
+                if (listener != null) {
+                    Log.d(TAG, "onCreateDialog: Notifying listener about new excursion");
+                    listener.onExcursionAdded(excursion);
+                }
+                dismiss();
+            } catch (DateTimeParseException e) {
+                Log.e(TAG, "Date parsing error: " + e.getMessage());
+                getActivity().runOnUiThread(() ->
+                        Toast.makeText(getContext(), INVALID_DATE_FORMAT_WARNING, Toast.LENGTH_SHORT).show()
+                );
             }
-            Log.d(TAG, "onCreateDialog: Creating new Excursion: " + excursion.getId());
-            if (listener != null) {
-                Log.d(TAG, "onCreateDialog: Notifying listener about new excursion");
-                listener.onExcursionAdded(excursion);
-            }
-            dismiss();
         });
     }
 }

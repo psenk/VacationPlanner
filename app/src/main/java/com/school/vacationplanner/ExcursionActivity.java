@@ -167,7 +167,9 @@ public class ExcursionActivity extends AppCompatActivity {
             excursionList.set(excursionList.indexOf(excursion), updatedExcursion);
             adapter.setExcursions(new ArrayList<>(excursionList));
             VacationPlannerRepository.getInstance(this).editExcursion(updatedExcursion);
-            Toast.makeText(this, EXCURSION_UPDATED, Toast.LENGTH_SHORT).show();
+            runOnUiThread(() -> {
+                Toast.makeText(this, EXCURSION_UPDATED, Toast.LENGTH_SHORT).show();
+            });
         });
 
         dialog.show(getSupportFragmentManager(), "EditVacationDialog");

@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreferenceCompat
+        android:key="vacation_notifications_enabled"
+        android:title="@string/enable_vacation_notifications"
+        android:summary="@string/pref_vacation_notifications_summary"
+        android:defaultValue="true" />
+    <SwitchPreferenceCompat
         android:key="notifications_enabled"
-        android:title="@string/enable_notifications"
-        android:summary="@string/pref_notifications_summary"
+        android:title="@string/enable_excursion_notifications"
+        android:summary="@string/pref_excursion_notifications_summary"
         android:defaultValue="true" />
 </PreferenceScreen>

@@ -1,6 +1,7 @@
 package com.school.vacationplanner;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.work.WorkRequest;
 
 import com.school.vacationplanner.adapters.VacationAdapter;
 import com.school.vacationplanner.fragments.VacationDialogFragment;
+import com.school.vacationplanner.models.Excursion;
 import com.school.vacationplanner.models.Vacation;
 import com.school.vacationplanner.repo.VacationPlannerRepository;
 import com.school.vacationplanner.workers.ExcursionNotificationWorker;
@@ -70,6 +72,7 @@ public class VacationActivity extends AppCompatActivity {
             if (isEditing || isDeleting) {
                 Log.d(TAG, "onCreate: Canceling mode on outside click");
                 toggleEditMode(false);
+                adapter.setOnItemClickListener(null);
                 isDeleting = false;
             }
         });
@@ -268,43 +271,62 @@ public class VacationActivity extends AppCompatActivity {
 
     public void shareVacationDetails(Vacation vacation) {
         Log.d(TAG, "shareVacationDetails: Share vacation selected");
+        final List<Excursion> excursions = new ArrayList<>();
 
-        String shareContent = "Vacation Details:\n" +
-                "Title: " + vacation.getTitle() + "\n" +
-                "Lodging: " + vacation.getLodging() + "\n" +
-                "Start Date: " + vacation.getStartDate() + "\n" +
-                "End Date: " + vacation.getEndDate();
+        final StringBuilder shareContentBuilder = new StringBuilder();
+        shareContentBuilder.append("Vacation Details:\n")
+                .append("Title: ").append(vacation.getTitle()).append("\n")
+                .append("Lodging: ").append(vacation.getLodging()).append("\n")
+                .append("Start Date: ").append(vacation.getStartDate()).append("\n")
+                .append("End Date: ").append(vacation.getEndDate());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VacationActivity.this);
-        builder.setTitle("Share via:")
-                .setItems(new CharSequence[]{"E-mail", "Clipboard", "SMS"}, (dialog, which) -> {
-                    switch (which) {
-                        case 0: // email
-                            Log.d(TAG, "shareVacationDetails: Share via email selected");
-                            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                            emailIntent.setType("text/plain");
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, VACATION_DETAILS);
-                            emailIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
-                            startActivity(Intent.createChooser(emailIntent, EMAIL_SEND));
-                            break;
-                        case 1: // clipboard
-                            Log.d(TAG, "shareVacationDetails: Share via clipboard selected");
-                            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                            android.content.ClipData clip = android.content.ClipData.newPlainText(VACATION_DETAILS, shareContent);
-                            clipboard.setPrimaryClip(clip);
-                            Toast.makeText(VacationActivity.this, CLIPBOARD_COPY, Toast.LENGTH_SHORT).show();
-                            break;
-                        case 2: // sms
-                            Log.d(TAG, "shareVacationDetails: Share via SMS selected");
-                            Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-                            smsIntent.setType("vnd.android-dir/mms-sms");
-                            smsIntent.putExtra("sms_body", shareContent);
-                            startActivity(smsIntent);
-                            break;
-                    }
-                })
-                .show();
+        VacationPlannerRepository.getInstance(getApplicationContext()).getExcursionsForVacation(vacation.getId(), e -> {
+            if (e != null) {
+                excursions.addAll(e);
+            }
+            if (!excursions.isEmpty()) {
+                shareContentBuilder.append("\nExcursions:\n");
+                for (Excursion excursion : excursions) {
+                    shareContentBuilder.append("- ").append(excursion.getTitle()).append(": ").append(excursion.getDate()).append("\n");
+                }
+            } else {
+                shareContentBuilder.append("\nNo excursions scheduled for this vacation.\n");
+            }
 
+            final String shareContent = shareContentBuilder.toString();
+
+            runOnUiThread(() -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(VacationActivity.this);
+                builder.setTitle("Share via:")
+                        .setItems(new CharSequence[]{"E-mail", "Clipboard", "SMS"}, (dialog, which) -> {
+                            switch (which) {
+                                case 0: // email
+                                    Log.d(TAG, "shareVacationDetails: Share via email selected");
+                                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                                    emailIntent.setType("text/plain");
+                                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, VACATION_DETAILS);
+                                    emailIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
+                                    startActivity(Intent.createChooser(emailIntent, EMAIL_SEND));
+                                    break;
+                                case 1: // clipboard
+                                    Log.d(TAG, "shareVacationDetails: Share via clipboard selected");
+                                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                    android.content.ClipData clip = android.content.ClipData.newPlainText(VACATION_DETAILS, shareContent);
+                                    clipboard.setPrimaryClip(clip);
+                                    Toast.makeText(VacationActivity.this, CLIPBOARD_COPY, Toast.LENGTH_SHORT).show();
+                                    break;
+                                case 2: // sms
+                                    Log.d(TAG, "shareVacationDetails: Share via SMS selected");
+                                    Uri uri = Uri.parse("smsto:1234567890");
+                                    Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
+                                    smsIntent.putExtra("sms_body", shareContent);
+                                    startActivity(smsIntent);
+                                    break;
+                            }
+                        })
+                        .show();
+            });
+        });
     }
 
     private void reloadVacations() {

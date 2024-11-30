@@ -19,6 +19,7 @@ import com.school.vacationplanner.R;
 import com.school.vacationplanner.models.Vacation;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -120,21 +121,35 @@ public class VacationDialogFragment extends DialogFragment {
     }
 
     private void validateAndSave(String title, String lodging, String startDate, String endDate) {
-        LocalDate startDateLocal = LocalDate.parse(startDate);
-        LocalDate endDateLocal = LocalDate.parse(endDate);
 
-        if (startDateLocal.isAfter(endDateLocal)) {
-            Log.w(TAG, "onCreateDialog: Validation failed - end date before start date");
-            Toast.makeText(getContext(), INVALID_DATE_ORDER_WARNING, Toast.LENGTH_SHORT).show();
+        if (!isValidDateFormat(startDate) || !isValidDateFormat(endDate)) {
+            Log.w(TAG, "onCreateDialog: Validation failed - invalid date format");
+            Toast.makeText(getContext(), INVALID_DATE_FORMAT_WARNING, Toast.LENGTH_SHORT)
+                    .show();
             return;
         }
 
-        Vacation vacation = new Vacation(title, lodging, startDateLocal, endDateLocal);
-        Log.d(TAG, "onCreateDialog: New vacation created: " + vacation);
-        if (listener != null) {
-            Log.d(TAG, "onCreateDialog: Notifying listener of new vacation");
-            listener.onVacationAdded(vacation);
+        try {
+            LocalDate startDateLocal = LocalDate.parse(startDate);
+            LocalDate endDateLocal = LocalDate.parse(endDate);
+
+            if (startDateLocal.isAfter(endDateLocal)) {
+                Log.w(TAG, "onCreateDialog: Validation failed - end date before start date");
+                Toast.makeText(getContext(), INVALID_DATE_ORDER_WARNING, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Vacation vacation = new Vacation(title, lodging, startDateLocal, endDateLocal);
+            Log.d(TAG, "onCreateDialog: New vacation created: " + vacation);
+            if (listener != null) {
+                Log.d(TAG, "onCreateDialog: Notifying listener of new vacation");
+                listener.onVacationAdded(vacation);
+            }
+            dismiss();
+
+        } catch (DateTimeParseException e) {
+            Log.e(TAG, "Date parsing error: " + e.getMessage());
+            Toast.makeText(getContext(), INVALID_DATE_FORMAT_WARNING, Toast.LENGTH_SHORT).show();
         }
-        dismiss();
     }
 }

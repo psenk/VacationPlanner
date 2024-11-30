@@ -6,6 +6,15 @@ android {
     namespace 'com.school.vacationplanner'
     compileSdk 35
 
+    signingConfigs {
+        release {
+            storeFile file("F:\\AndroidProjects\\KS\\schoolplanner.jks")
+            storePassword "abc123"
+            keyAlias "vacationplanner_key"
+            keyPassword "abc123"
+        }
+    }
+
     defaultConfig {
         applicationId "com.school.vacationplanner"
         minSdk 35
@@ -19,6 +28,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -38,6 +48,8 @@ dependencies {
     implementation libs.androidx.preference
     implementation libs.androidx.espresso.intents
     testImplementation libs.junit
+    testImplementation libs.ext.junit
+    testImplementation libs.androidx.work.testing
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
@@ -54,5 +66,5 @@ dependencies {
     testImplementation libs.mockito.android
     testImplementation libs.mockito.inline
     implementation libs.mockito.android.v5142
-    testImplementation libs.robolectric
+    androidTestImplementation libs.androidx.work.testing
 }
