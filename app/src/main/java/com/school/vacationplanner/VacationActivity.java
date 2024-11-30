@@ -65,6 +65,14 @@ public class VacationActivity extends AppCompatActivity {
         setUpRecyclerView();
         scheduleVacationCheck();
         scheduleExcursionCheck();
+
+        findViewById(R.id.parent_layout).setOnClickListener(v -> {
+            if (isEditing || isDeleting) {
+                Log.d(TAG, "onCreate: Canceling mode on outside click");
+                toggleEditMode(false);
+                isDeleting = false;
+            }
+        });
     }
 
     @Override
@@ -157,7 +165,10 @@ public class VacationActivity extends AppCompatActivity {
                 Log.d(TAG, "setUpRecyclerView: Vacation clicked for deletion: " + vacation.getTitle());
                 showDeleteConfirmationDialog(vacation);
             } else {
-                // show details dialog fragment
+                Log.d(TAG, "setUpRecyclerView: Vacation clicked, opening details");
+                Intent intent = new Intent(this, VacationDetailActivity.class);
+                intent.putExtra("vacationId", vacation.getId());
+                startActivity(intent);
             }
         });
 
@@ -205,7 +216,10 @@ public class VacationActivity extends AppCompatActivity {
                                         isDeleting = false;
                                     }
                                 })))
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                    isDeleting = false;
+                })
                 .show();
     }
 
@@ -252,7 +266,7 @@ public class VacationActivity extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(excursionCheckRequest);
     }
 
-    private void shareVacationDetails(Vacation vacation) {
+    public void shareVacationDetails(Vacation vacation) {
         Log.d(TAG, "shareVacationDetails: Share vacation selected");
 
         String shareContent = "Vacation Details:\n" +

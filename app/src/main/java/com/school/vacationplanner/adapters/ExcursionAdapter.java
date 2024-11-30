@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.school.vacationplanner.R;
 import com.school.vacationplanner.models.Excursion;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

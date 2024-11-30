@@ -1,0 +1,27 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/detail_excursion_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:text="@string/excursion_title"
+        android:textSize="18sp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/detail_excursion_date"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/black"
+        android:text="@string/date_format"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

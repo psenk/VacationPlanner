@@ -36,6 +36,7 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.androidx.navigation.runtime
     implementation libs.androidx.preference
+    implementation libs.androidx.espresso.intents
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -48,4 +49,10 @@ dependencies {
     implementation libs.gson
     implementation libs.androidx.work.runtime
     implementation libs.androidx.core
+    testImplementation libs.mockito.core
+    androidTestImplementation libs.mockito.android
+    testImplementation libs.mockito.android
+    testImplementation libs.mockito.inline
+    implementation libs.mockito.android.v5142
+    testImplementation libs.robolectric
 }

@@ -42,5 +42,10 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="start_date_title">Start Date</string>
+    <string name="detail_vacation_lodging">Lodging</string>
+    <string name="end_date_title">End Date</string>
+    <string name="app_icon_description">Vacation Planner Icon</string>
+    <string name="tap_to_continue">Tap to Continue</string>
 
 </resources>
