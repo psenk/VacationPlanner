@@ -251,8 +251,9 @@ public class VacationActivity extends AppCompatActivity {
 
     private void scheduleVacationCheck() {
         Log.d(TAG, "scheduleVacationCheck: Scheduling vacation check");
+
         WorkRequest vacationCheckRequest = new OneTimeWorkRequest.Builder(VacationNotificationWorker.class)
-                .setInitialDelay(1, TimeUnit.DAYS)
+                .setInitialDelay(1, TimeUnit.MILLISECONDS)
                 .addTag("vacation_check")
                 .build();
 
@@ -262,7 +263,7 @@ public class VacationActivity extends AppCompatActivity {
     private void scheduleExcursionCheck() {
         Log.d(TAG, "scheduleExcursionCheck: Scheduling excursion check");
         WorkRequest excursionCheckRequest = new OneTimeWorkRequest.Builder(ExcursionNotificationWorker.class)
-                .setInitialDelay(1, TimeUnit.DAYS)
+                .setInitialDelay(1, TimeUnit.MILLISECONDS)
                 .addTag("excursion_check")
                 .build();
 
